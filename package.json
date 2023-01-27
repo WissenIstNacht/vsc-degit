@@ -18,6 +18,10 @@
       {
         "command": "vsc-degit.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "vsc-degit.degit",
+        "title": "Degit"
       }
     ]
   },
