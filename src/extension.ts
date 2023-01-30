@@ -1,16 +1,13 @@
-import * as vscode from 'vscode';
+import { commands, ExtensionContext, InputBoxOptions, window } from 'vscode';
 
-export function activate(context: vscode.ExtensionContext) {
-  let disposable = vscode.commands.registerCommand(
-    'vsc-degit.helloWorld',
-    () => {
-      vscode.window.showInformationMessage('Hello World from degit!');
-    }
-  );
+export function activate(context: ExtensionContext) {
+  let disposable = commands.registerCommand('vsc-degit.helloWorld', () => {
+    window.showInformationMessage('Hello World from degit!');
+  });
   context.subscriptions.push(disposable);
 
-  disposable = vscode.commands.registerCommand('vsc-degit.degit', () => {
-    const options: vscode.InputBoxOptions = {
+  disposable = commands.registerCommand('vsc-degit.degit', () => {
+    const options: InputBoxOptions = {
       ignoreFocusOut: true,
       placeHolder: 'URL',
       prompt: 'Enter a URL to degit',
@@ -27,14 +24,15 @@ export function activate(context: vscode.ExtensionContext) {
         return isErroneousInput(value);
       },
     };
-    vscode.window.showInputBox(options).then((value) => {
+    window.showInputBox(options).then((value) => {
       if (value === undefined) {
-        vscode.window.showInformationMessage('The prompt was cancelled');
+        window.showInformationMessage('The prompt was cancelled');
       } else {
-        vscode.window.showInformationMessage(`The entered URL was: ${value}`);
+        window.showInformationMessage(`The entered URL was: ${value}`);
       }
     });
   });
+  context.subscriptions.push(disposable);
 }
 
 export function deactivate() {}
