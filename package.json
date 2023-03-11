@@ -22,6 +22,10 @@
       {
         "command": "vsc-degit.degit",
         "title": "Degit"
+      },
+      {
+        "command": "vsc-degit.degit-mock",
+        "title": "Degit Mock"
       }
     ]
   },
