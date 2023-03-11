@@ -2,13 +2,13 @@ import degit = require('degit');
 import { commands, ExtensionContext } from 'vscode';
 
 import { basicDegitCommand } from './commands/basicDegit';
-import { degitHelloWorld } from './commands/degitHelloWorld';
+import { degitHelloWorldCommand } from './commands/degitHelloWorld';
 import { urlInputCommand } from './commands/urlInput';
 
 export function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand(
-    'vsc-degit.helloWorld',
-    degitHelloWorld
+    degitHelloWorldCommand.name,
+    degitHelloWorldCommand.callback
   );
   context.subscriptions.push(disposable);
 
