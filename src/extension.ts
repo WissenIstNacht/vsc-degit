@@ -1,6 +1,8 @@
 import degit = require('degit');
-import { commands, ExtensionContext, InputBoxOptions, window } from 'vscode';
+import { commands, ExtensionContext, window } from 'vscode';
+
 import { basicDegitCommand } from './commands/basicDegit';
+import { urlInputCommand } from './commands/urlInput';
 
 export function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand('vsc-degit.helloWorld', () => {
@@ -8,32 +10,7 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(disposable);
 
-  disposable = commands.registerCommand('vsc-degit.degit', () => {
-    const options: InputBoxOptions = {
-      ignoreFocusOut: true,
-      placeHolder: 'URL',
-      prompt: 'Enter a URL to degit',
-      validateInput: (value: string) => {
-        function isErroneousInput(value: string) {
-          // TODO perform validation and return non-empty string on error.
-          const UrlRegExp =
-            /^((?:(?:http|ftp|ws)s?|sftp):\/\/?)?([^:/\s.#?]+\.[^:/\s#?]+|localhost)(:\d+)?((?:\/\w+)*\/)?([\w\-.]+[^#?\s]+)?([^#]+)?(#[\w-]*)?$/gm;
-          const regExpResult = value.match(UrlRegExp);
-
-          return regExpResult ? undefined : 'String must be a URL';
-        }
-
-        return isErroneousInput(value);
-      },
-    };
-    window.showInputBox(options).then((value) => {
-      if (value === undefined) {
-        window.showInformationMessage('The prompt was cancelled');
-      } else {
-        window.showInformationMessage(`The entered URL was: ${value}`);
-      }
-    });
-  });
+  disposable = commands.registerCommand('vsc-degit.degit', urlInputCommand);
   context.subscriptions.push(disposable);
 
   disposable = commands.registerCommand(
