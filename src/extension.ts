@@ -1,27 +1,14 @@
 import { commands, ExtensionContext } from 'vscode';
-
-import { basicDegitCommand } from './commands/basicDegit';
-import { degitHelloWorldCommand } from './commands/degitHelloWorld';
-import { urlInputCommand } from './commands/urlInput';
+import { registerableCommands } from './commands';
 
 export function activate(context: ExtensionContext) {
-  let disposable = commands.registerCommand(
-    'vsc-degit.' + degitHelloWorldCommand.name,
-    degitHelloWorldCommand.callback
-  );
-  context.subscriptions.push(disposable);
-
-  disposable = commands.registerCommand(
-    'vsc-degit.' + urlInputCommand.name,
-    urlInputCommand.callback
-  );
-  context.subscriptions.push(disposable);
-
-  disposable = commands.registerCommand(
-    'vsc-degit.' + basicDegitCommand.name,
-    basicDegitCommand.callback
-  );
-  context.subscriptions.push(disposable);
+  registerableCommands.forEach((regCom) => {
+    const newCommand = commands.registerCommand(
+      'vsc-degit.' + regCom.name,
+      regCom.callback
+    );
+    context.subscriptions.push(newCommand);
+  });
 }
 
 export function deactivate() {}
