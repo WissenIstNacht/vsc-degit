@@ -1,6 +1,7 @@
 import { InputBoxOptions, window } from 'vscode';
+import { RegisterableCommand } from '../types';
 
-export function urlInputCommand() {
+function urlInputCallback() {
   const options: InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: 'URL',
@@ -26,3 +27,8 @@ export function urlInputCommand() {
     }
   });
 }
+
+export const urlInputCommand: RegisterableCommand = {
+  name: 'degit',
+  callback: urlInputCallback,
+};
