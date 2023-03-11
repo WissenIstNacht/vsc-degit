@@ -1,7 +1,8 @@
 import degit = require('degit');
 import { window } from 'vscode';
+import { RegisterableCommand } from '../types';
 
-export function basicDegitCommand() {
+function basicDegitCallback() {
   const repository = 'WissenIstNacht/widget-caller';
 
   const emitter = degit(repository);
@@ -22,3 +23,8 @@ export function basicDegitCommand() {
     }
   );
 }
+
+export const basicDegitCommand: RegisterableCommand = {
+  name: 'degit-mock',
+  callback: basicDegitCallback,
+};

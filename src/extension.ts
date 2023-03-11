@@ -18,8 +18,8 @@ export function activate(context: ExtensionContext) {
   context.subscriptions.push(disposable);
 
   disposable = commands.registerCommand(
-    'vsc-degit.degit-mock',
-    basicDegitCommand
+    'vsc-degit.' + basicDegitCommand.name,
+    basicDegitCommand.callback
   );
   context.subscriptions.push(disposable);
 }
