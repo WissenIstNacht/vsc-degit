@@ -1,5 +1,6 @@
 import degit = require('degit');
 import { commands, ExtensionContext, InputBoxOptions, window } from 'vscode';
+import { basicDegitCommand } from './commands/basicDegit';
 
 export function activate(context: ExtensionContext) {
   let disposable = commands.registerCommand('vsc-degit.helloWorld', () => {
@@ -35,27 +36,10 @@ export function activate(context: ExtensionContext) {
   });
   context.subscriptions.push(disposable);
 
-  disposable = commands.registerCommand('vsc-degit.degit-mock', () => {
-    const repository = 'WissenIstNacht/widget-caller';
-
-    const emitter = degit(repository);
-    emitter.on('info', (info) => {
-      console.log(info.message);
-    });
-    emitter.on('warn', (info) => {
-      console.warn(info.message);
-    });
-
-    emitter.clone('/Users/vali/Documents/hi/widget-caller').then(
-      () => {
-        window.showInformationMessage(`${repository} successfully degitted.`);
-      },
-      (reason) => {
-        window.showErrorMessage(`error degitting ${repository}.`);
-        console.error('Reason ' + reason);
-      }
-    );
-  });
+  disposable = commands.registerCommand(
+    'vsc-degit.degit-mock',
+    basicDegitCommand
+  );
   context.subscriptions.push(disposable);
 }
 
