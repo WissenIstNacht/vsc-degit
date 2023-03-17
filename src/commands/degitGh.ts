@@ -3,7 +3,9 @@ import { InputBoxOptions, window } from 'vscode';
 import { RegisterableCommand } from '../types';
 
 function degitGhCallback() {
-  userInput();
+  userInput().then((inputValue) => {
+    degitHelper(inputValue);
+  });
 }
 
 function degitHelper(repository: string) {
@@ -15,7 +17,7 @@ function degitHelper(repository: string) {
     console.warn(info.message);
   });
 
-  emitter.clone('/Users/vali/Documents/hi/widget-caller1').then(
+  emitter.clone(`/Users/vali/Documents/hi/${repository}`).then(
     () => {
       window.showInformationMessage(`${repository} successfully degitted.`);
     },
@@ -24,9 +26,10 @@ function degitHelper(repository: string) {
       console.error('Reason ' + reason);
     }
   );
+  window.showInformationMessage(`${repository} successfully degitted.`);
 }
 
-function userInput() {
+async function userInput(): Promise<string> {
   const options: InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: 'Github Repository',
@@ -34,7 +37,8 @@ function userInput() {
     validateInput: (value: string) => {
       function isErroneousInput(value: string) {
         // TODO perform validation and return non-empty string on error.
-        const UrlRegExp = /^[a-z]+[a-z\d\-_]*\/[a-z]+[a-z\d\-_]*$/gm;
+        const UrlRegExp =
+          /^[a-zA-Z]+[a-zA-Z\d\-_]*\/[a-zA-Z]+[a-zA-Z\d\-_]*$/gm;
         const regExpResult = value.match(UrlRegExp);
 
         return regExpResult
@@ -45,11 +49,13 @@ function userInput() {
       return isErroneousInput(value);
     },
   };
-  window.showInputBox(options).then((value) => {
+
+  return window.showInputBox(options).then((value) => {
     if (value === undefined) {
       window.showInformationMessage('The prompt was cancelled');
+      return Promise.reject();
     } else {
-      window.showInformationMessage(`The entered URL was: ${value}`);
+      return Promise.resolve(value);
     }
   });
 }
