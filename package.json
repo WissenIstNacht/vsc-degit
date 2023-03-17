@@ -26,6 +26,10 @@
       {
         "command": "vsc-degit.degit-mock",
         "title": "Degit Mock"
+      },
+      {
+        "command": "vsc-degit.degit-gh",
+        "title": "Degit Github"
       }
     ]
   },
