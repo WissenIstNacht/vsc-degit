@@ -1,9 +1,10 @@
 import degit = require('degit');
 import { window } from 'vscode';
+
 import { RegisterableCommand } from '../types';
 
 function basicDegitCallback() {
-  const repository = 'WissenIstNacht/widget-caller';
+  const repository = WIDGET_CALLER;
 
   const emitter = degit(repository);
   emitter.on('info', (info) => {
@@ -13,7 +14,7 @@ function basicDegitCallback() {
     console.warn(info.message);
   });
 
-  emitter.clone('/Users/vali/Documents/hi/widget-caller1').then(
+  emitter.clone(`${LOCAL_DST}/widget-caller`).then(
     () => {
       window.showInformationMessage(`${repository} successfully degitted.`);
     },
