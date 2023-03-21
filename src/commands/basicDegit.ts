@@ -3,7 +3,7 @@ import { window } from 'vscode';
 
 import { RegisterableCommand } from '../types';
 
-function basicDegitCallback() {
+async function basicDegitCallback() {
   const repository = WIDGET_CALLER;
 
   const emitter = degit(repository);
@@ -14,15 +14,13 @@ function basicDegitCallback() {
     console.warn(info.message);
   });
 
-  emitter.clone(`${LOCAL_DST}/widget-caller`).then(
-    () => {
-      window.showInformationMessage(`${repository} successfully degitted.`);
-    },
-    (reason) => {
-      window.showErrorMessage(`error degitting ${repository}.`);
-      console.error('Reason ' + reason);
-    }
-  );
+  try {
+    await emitter.clone(`${LOCAL_DST}/widget-caller`);
+    window.showInformationMessage(`${repository} successfully degitted.`);
+  } catch (reason) {
+    window.showErrorMessage(`error degitting ${repository}.`);
+    console.error('Reason ' + reason);
+  }
 }
 
 export const basicDegitCommand: RegisterableCommand = {

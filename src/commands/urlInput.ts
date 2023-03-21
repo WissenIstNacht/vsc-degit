@@ -1,7 +1,9 @@
 import { InputBoxOptions, window } from 'vscode';
+
+import { URL_VALIDATION_REGEXP } from '../constants/regex';
 import { RegisterableCommand } from '../types';
 
-function urlInputCallback() {
+async function urlInputCallback() {
   const options: InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: 'URL',
@@ -15,13 +17,13 @@ function urlInputCallback() {
       return isErroneousInput(value);
     },
   };
-  window.showInputBox(options).then((value) => {
-    if (value === undefined) {
-      window.showInformationMessage('The prompt was cancelled');
-    } else {
-      window.showInformationMessage(`The entered URL was: ${value}`);
-    }
-  });
+
+  const inputValue = await window.showInputBox(options);
+  if (inputValue === undefined) {
+    window.showInformationMessage('The prompt was cancelled');
+  } else {
+    window.showInformationMessage(`The entered URL was: ${inputValue}`);
+  }
 }
 
 export const urlInputCommand: RegisterableCommand = {
