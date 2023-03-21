@@ -1,5 +1,11 @@
 import degit = require('degit');
-import { InputBoxOptions, OpenDialogOptions, Uri, window } from 'vscode';
+import {
+  InputBoxOptions,
+  OpenDialogOptions,
+  Uri,
+  window,
+  workspace,
+} from 'vscode';
 
 import { GH_PROJECT_VALIDATION_REGEXP } from '../constants/regex';
 import { RegisterableCommand } from '../types';
@@ -29,12 +35,16 @@ async function degitHelper(repository: string, dst: Uri[]) {
 }
 
 async function inputDstFolder(): Promise<Uri[]> {
+  const config = workspace.getConfiguration('vsc-degit');
+  const path = config.get('preferredFilePickerLocation') as string | undefined;
   const options: OpenDialogOptions = {
     canSelectFolders: true,
     canSelectFiles: false,
     title: 'Degit Destination',
     openLabel: 'Select',
+    defaultUri: path ? Uri.file(path) : undefined,
   };
+
   const dstValue = await window.showOpenDialog(options);
   if (dstValue === undefined) {
     window.showInformationMessage('The prompt was cancelled');

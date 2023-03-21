@@ -31,7 +31,17 @@
         "command": "vsc-degit.degit-gh",
         "title": "Degit Github"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Degit",
+      "properties": {
+        "vsc-degit.preferredFilePickerLocation": {
+          "type": "string",
+          "default": "",
+          "description": "Preferred location for the system's file picker to open."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
