@@ -27,6 +27,6 @@ async function urlInputCallback() {
 }
 
 export const urlInputCommand: RegisterableCommand = {
-  name: 'degit',
+  name: 'url-input',
   callback: urlInputCallback,
 };

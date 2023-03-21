@@ -24,6 +24,6 @@ async function basicDegitCallback() {
 }
 
 export const basicDegitCommand: RegisterableCommand = {
-  name: 'degit-mock',
+  name: 'degit-basic',
   callback: basicDegitCallback,
 };

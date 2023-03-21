@@ -20,12 +20,12 @@
         "title": "Hello World"
       },
       {
-        "command": "vsc-degit.degit",
-        "title": "Degit"
+        "command": "vsc-degit.url-input",
+        "title": "Url Input"
       },
       {
-        "command": "vsc-degit.degit-mock",
-        "title": "Degit Mock"
+        "command": "vsc-degit.degit-basic",
+        "title": "Degit Basic"
       },
       {
         "command": "vsc-degit.degit-gh",
