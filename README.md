@@ -1,8 +1,12 @@
 # vsc-degit: Degit extension for VS Code
 
+This extension allows to use NPM's degit from within VS Code.
+
 ## Features
 
-TODO
+### Degit Github
+
+This command prompts the user to enter a Github Project and to select a destination for that projected to be degitted to.
 
 ## Development
 
