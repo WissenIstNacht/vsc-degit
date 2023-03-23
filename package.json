@@ -1,13 +1,17 @@
 {
   "name": "vsc-degit",
-  "displayName": "degit",
+  "displayName": "Degit",
   "description": "Extension integrating NPM's degit package into VS Code",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "publisher": "ValentinRacine",
   "engines": {
     "vscode": "^1.74.0"
   },
   "categories": [
-    "Other"
+    "SCM Providers"
+  ],
+  "extensionKind": [
+    "ui"
   ],
   "activationEvents": [
     "onCommand:vsc-degit.helloWorld"
