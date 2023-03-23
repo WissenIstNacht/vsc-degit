@@ -13,24 +13,9 @@
   "extensionKind": [
     "ui"
   ],
-  "activationEvents": [
-    "onCommand:vsc-degit.helloWorld"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "vsc-degit.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "vsc-degit.url-input",
-        "title": "Url Input"
-      },
-      {
-        "command": "vsc-degit.degit-basic",
-        "title": "Degit Basic"
-      },
       {
         "command": "vsc-degit.degit-gh",
         "title": "Degit Github"
