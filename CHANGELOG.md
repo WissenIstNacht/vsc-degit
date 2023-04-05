@@ -6,6 +6,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.2.0]
+
+- Prompt user to open successfully degitted repository.
+  - Either in same or in new window
+- Introduce setting that allows user to select default action w.r.t. opening a successfully degitted repository
+
+## [0.1.1]
+
+- Remove sandboxing commands from extension manifest.
+
 ## [0.1.0]
 
 - Initial release
