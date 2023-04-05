@@ -3,6 +3,7 @@ import {
   InputBoxOptions,
   OpenDialogOptions,
   Uri,
+  commands,
   window,
   workspace,
 } from 'vscode';
@@ -16,7 +17,62 @@ async function degitGhCallback() {
   degitHelper(inputValue, dstValue);
 }
 
-async function degitHelper(repository: string, dst: Uri[]) {
+async function openRepository(repositoryPath: string) {
+  try {
+    const config = workspace.getConfiguration('vsc-degit');
+    const openPreference = config.get<
+      'alwaysReuseWindow' | 'alwaysNewWindow' | 'alwaysPrompt' | 'never'
+    >('preferredOpenAfterDegit');
+
+    // undefined means "do nothing"
+    type ActionOpen = 'openReuse' | 'openNew' | undefined;
+    let action: ActionOpen = undefined;
+
+    // assign action based on preferences/prompt
+    if (openPreference === 'never') {
+      return;
+    } else if (openPreference === 'alwaysReuseWindow') {
+      action = 'openReuse';
+    } else if (openPreference === 'alwaysNewWindow') {
+      action = 'openNew';
+    } else {
+      const promptMessage = 'Would you like to open the degitted repository?';
+      const openReuse = 'Open';
+      const openNew = 'Open in New Window';
+      const choices = [openReuse, openNew];
+
+      const promptValue = await window.showInformationMessage(
+        promptMessage,
+        { modal: true },
+        ...choices
+      );
+
+      action =
+        promptValue === openReuse
+          ? 'openReuse'
+          : promptValue === openNew
+          ? 'openNew'
+          : undefined;
+    }
+
+    const uri = Uri.file(repositoryPath);
+
+    // execute action
+    if (action === 'openReuse') {
+      commands.executeCommand('vscode.openFolder', uri, {
+        forceReuseWindow: true,
+      });
+    } else if (action === 'openNew') {
+      commands.executeCommand('vscode.openFolder', uri, {
+        forceNewWindow: true,
+      });
+    }
+  } catch (err) {
+    window.showErrorMessage(`Couldn't open the degitted repository.`);
+  }
+}
+
+async function degitHelper(repository: string, dst: Uri[]): Promise<void> {
   const emitter = degit(repository);
   emitter.on('info', (info) => {
     console.log(info.message);
@@ -25,9 +81,10 @@ async function degitHelper(repository: string, dst: Uri[]) {
     console.warn(info.message);
   });
 
+  const degitPath = `${dst[0].path}/${repository}`;
   try {
-    await emitter.clone(`${dst[0].path}/${repository}`);
-    window.showInformationMessage(`${repository} successfully degitted.`);
+    await emitter.clone(degitPath);
+    openRepository(degitPath);
   } catch (reason) {
     window.showErrorMessage(`error degitting ${repository}.`);
     console.error('Reason ' + reason);

@@ -28,6 +28,23 @@
           "type": "string",
           "default": "",
           "description": "Preferred location for the system's file picker to open."
+        },
+        "vsc-degit.preferredOpenAfterDegit": {
+          "type": "string",
+          "enum": [
+            "alwaysReuseWindow",
+            "alwaysNewWindow",
+            "alwaysPrompt", 
+            "never"
+          ],
+          "enumDescriptions": [
+            "Always open a successfully degitted repository in the same window",
+            "Always open a successfully degitted repository in a new window",
+            "Always ask what to do after successfully degitting a repository",
+            "Never open a successfully degitted repository."
+          ],
+          "default": "alwaysPrompt",
+          "description": "What to do after successfully degitting a repository."
         }
       }
     }
