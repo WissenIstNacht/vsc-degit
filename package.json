@@ -2,7 +2,7 @@
   "name": "vsc-degit",
   "displayName": "Degit",
   "description": "Extension integrating NPM's degit package into VS Code",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "publisher": "ValentinRacine",
   "engines": {
     "vscode": "^1.74.0"
@@ -34,7 +34,7 @@
           "enum": [
             "alwaysReuseWindow",
             "alwaysNewWindow",
-            "alwaysPrompt", 
+            "alwaysPrompt",
             "never"
           ],
           "enumDescriptions": [
