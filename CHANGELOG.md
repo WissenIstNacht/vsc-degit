@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.2.1]
+
+- Update Extension metadata
+
 ## [0.2.0]
 
 - Prompt user to open successfully degitted repository.
