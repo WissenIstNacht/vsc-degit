@@ -11,7 +11,7 @@
   "icon": "media/vsc-degit-logo.png",
   "license": "Apache-2.0",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.73.1"
   },
   "categories": [
     "SCM Providers"
@@ -20,6 +20,9 @@
     "ui"
   ],
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:vsc-degit.degit-gh"
+  ],
   "contributes": {
     "commands": [
       {
