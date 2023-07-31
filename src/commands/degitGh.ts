@@ -1,19 +1,13 @@
 import degit = require('degit');
-import {
-  InputBoxOptions,
-  OpenDialogOptions,
-  Uri,
-  commands,
-  window,
-  workspace,
-} from 'vscode';
+import { InputBoxOptions, Uri, commands, window, workspace } from 'vscode';
 
 import { GH_PROJECT_VALIDATION_REGEXP } from '../constants/regex';
 import { RegisterableCommand } from '../types';
+import { pickFolder } from '../util/io';
 
 async function degitGhCallback() {
   const inputValue = await inputGhProject();
-  const dstValue = await inputDstFolder();
+  const dstValue = await pickFolder('Degit Destination');
   degitHelper(inputValue, dstValue);
 }
 
@@ -88,26 +82,6 @@ async function degitHelper(repository: string, dst: Uri[]): Promise<void> {
   } catch (reason) {
     window.showErrorMessage(`error degitting ${repository}.`);
     console.error('Reason ' + reason);
-  }
-}
-
-async function inputDstFolder(): Promise<Uri[]> {
-  const config = workspace.getConfiguration('vsc-degit');
-  const path = config.get('preferredFilePickerLocation') as string | undefined;
-  const options: OpenDialogOptions = {
-    canSelectFolders: true,
-    canSelectFiles: false,
-    title: 'Degit Destination',
-    openLabel: 'Select',
-    defaultUri: path ? Uri.file(path) : undefined,
-  };
-
-  const dstValue = await window.showOpenDialog(options);
-  if (dstValue === undefined) {
-    window.showInformationMessage('The prompt was cancelled');
-    return Promise.reject();
-  } else {
-    return Promise.resolve(dstValue);
   }
 }
 
