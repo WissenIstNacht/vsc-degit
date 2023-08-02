@@ -7,6 +7,10 @@ import { openRepository, pickFolder } from '../util/io';
 
 async function degitGhCallback() {
   const repositoryId = await inputGhProject();
+  if (repositoryId === undefined) {
+    window.showInformationMessage('The prompt was cancelled');
+    return;
+  }
   const dstValue = await pickFolder('Degit Destination');
   degitHelper(repositoryId, dstValue);
 }
@@ -30,7 +34,7 @@ async function degitHelper(repository: string, dst: Uri[]): Promise<void> {
   }
 }
 
-async function inputGhProject(): Promise<string> {
+async function inputGhProject(): Promise<string | undefined> {
   const options: InputBoxOptions = {
     ignoreFocusOut: true,
     placeHolder: 'Github Repository',
@@ -47,13 +51,7 @@ async function inputGhProject(): Promise<string> {
     },
   };
 
-  const inputValue = await window.showInputBox(options);
-  if (inputValue === undefined) {
-    window.showInformationMessage('The prompt was cancelled');
-    return Promise.reject();
-  } else {
-    return Promise.resolve(inputValue);
-  }
+  return window.showInputBox(options);
 }
 
 export const degitGhCommand: RegisterableCommand = {
