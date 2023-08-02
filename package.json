@@ -28,6 +28,10 @@
       {
         "command": "vsc-degit.degit-gh",
         "title": "Degit Github"
+      },
+      {
+        "command": "vsc-degit.degit-local",
+        "title": "Degit Local"
       }
     ],
     "configuration": {

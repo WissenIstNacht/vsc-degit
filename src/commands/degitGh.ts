@@ -1,69 +1,14 @@
 import degit = require('degit');
-import { InputBoxOptions, Uri, commands, window, workspace } from 'vscode';
+import { InputBoxOptions, Uri, window } from 'vscode';
 
 import { GH_PROJECT_VALIDATION_REGEXP } from '../constants/regex';
 import { RegisterableCommand } from '../types';
-import { pickFolder } from '../util/io';
+import { openRepository, pickFolder } from '../util/io';
 
 async function degitGhCallback() {
-  const inputValue = await inputGhProject();
+  const repositoryId = await inputGhProject();
   const dstValue = await pickFolder('Degit Destination');
-  degitHelper(inputValue, dstValue);
-}
-
-async function openRepository(repositoryPath: string) {
-  try {
-    const config = workspace.getConfiguration('vsc-degit');
-    const openPreference = config.get<
-      'alwaysReuseWindow' | 'alwaysNewWindow' | 'alwaysPrompt' | 'never'
-    >('preferredOpenAfterDegit');
-
-    // undefined means "do nothing"
-    type ActionOpen = 'openReuse' | 'openNew' | undefined;
-    let action: ActionOpen = undefined;
-
-    // assign action based on preferences/prompt
-    if (openPreference === 'never') {
-      return;
-    } else if (openPreference === 'alwaysReuseWindow') {
-      action = 'openReuse';
-    } else if (openPreference === 'alwaysNewWindow') {
-      action = 'openNew';
-    } else {
-      const promptMessage = 'Would you like to open the degitted repository?';
-      const openReuse = 'Open';
-      const openNew = 'Open in New Window';
-      const choices = [openReuse, openNew];
-
-      const promptValue = await window.showInformationMessage(
-        promptMessage,
-        { modal: true },
-        ...choices
-      );
-
-      action =
-        promptValue === openReuse
-          ? 'openReuse'
-          : promptValue === openNew
-          ? 'openNew'
-          : undefined;
-    }
-
-    const uri = Uri.file(repositoryPath);
-
-    // execute action
-    if (action === 'openReuse') {
-      commands.executeCommand('vscode.openFolder', uri, {
-        forceReuseWindow: true,
-      });
-    } else if (action === 'openNew') {
-      commands.executeCommand('vscode.openFolder', uri, {
-        forceNewWindow: true,
-      });
-    }
-  } catch (err) {
-    window.showErrorMessage(`Couldn't open the degitted repository.`);
-  }
+  degitHelper(repositoryId, dstValue);
 }
 
 async function degitHelper(repository: string, dst: Uri[]): Promise<void> {
@@ -95,7 +40,7 @@ async function inputGhProject(): Promise<string> {
         const regExpResult = value.match(GH_PROJECT_VALIDATION_REGEXP);
         return regExpResult
           ? undefined
-          : 'String must be a of tye <Username>/<Projectname>';
+          : 'String must be a of type <Username>/<Projectname>';
       }
 
       return isErroneousInput(inputBoxValue);
