@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.4.0]
+
+- Add `degit-local` command that allows to degit a local git repository.
+
 ## [0.3.0]
 
 - Lower the minimum VS Code version necessary to ue this extension from 1.74.0 to 1.73.1
