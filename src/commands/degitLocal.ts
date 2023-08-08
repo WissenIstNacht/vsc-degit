@@ -21,12 +21,13 @@ async function degitLocal(named: boolean) {
   let repositoryName = srcPath.split('/').slice(-1)[0];
 
   if (named) {
-    const name = await inputRepositoryName();
+    const name = await inputNewFolderName(repositoryName);
     if (name === undefined) {
       window.showInformationMessage('The prompt was cancelled');
       return;
+    } else if (name) {
+      repositoryName = name;
     }
-    repositoryName = name;
   }
 
   try {
@@ -46,18 +47,19 @@ async function degitLocal(named: boolean) {
   openRepository(newRepository);
 }
 
-async function inputRepositoryName(): Promise<string | undefined> {
+async function inputNewFolderName(
+  sourceName: string
+): Promise<string | undefined> {
   const options: InputBoxOptions = {
     ignoreFocusOut: true,
-    placeHolder: 'Github Repository',
-    prompt: 'Enter a Github repository to degit',
+    placeHolder: sourceName,
+    prompt:
+      'Enter new destination folder name or confirm to reuse source folder name.',
     validateInput: (inputBoxValue: string) => {
       function isErroneousInput(value: string) {
-        // TODO change validation
-        const regExpResult = value.match(CLONE_NAME_VALIDATION_REGEXP);
-        return regExpResult
-          ? undefined
-          : 'String must be a of type <Username>/<Projectname>';
+        const regExpResult =
+          value === '' || value.match(CLONE_NAME_VALIDATION_REGEXP);
+        return regExpResult ? undefined : 'String must be a valid folder name';
       }
 
       return isErroneousInput(inputBoxValue);
