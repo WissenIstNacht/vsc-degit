@@ -2,7 +2,7 @@
   "name": "vsc-degit",
   "displayName": "Degit",
   "description": "Extension integrating NPM's degit package into VS Code",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "ValentinRacine",
   "repository": {
     "type": "git",
