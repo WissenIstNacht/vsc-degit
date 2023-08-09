@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.5.1]
+
+- Fixed copies for the `degit-local` and `degit-local-named` commands.
+
 ## [0.5.0]
 
 - Add `degit-local-named` command. In addition to the `degit-local` command, this one allows to specify a name for the destination folder that will hold the degitted repository.
