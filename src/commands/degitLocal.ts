@@ -5,14 +5,10 @@ import { RegisterableCommand } from '../types';
 import { openRepository, pickFolder } from '../util/io';
 
 async function degitLocalCallback() {
-  degitLocal(false);
+  degitLocal();
 }
 
-async function degitLocalNamedCallback() {
-  degitLocal(true);
-}
-
-async function degitLocal(named: boolean) {
+async function degitLocal() {
   const srcDirectory = await pickFolder('Degit Local Source');
   const dstDirectory = await pickFolder('Degit Local Destination');
 
@@ -20,14 +16,12 @@ async function degitLocal(named: boolean) {
   const dstPath = `${dstDirectory[0].path}`;
   let repositoryName = srcPath.split('/').slice(-1)[0];
 
-  if (named) {
-    const name = await inputNewFolderName(repositoryName);
-    if (name === undefined) {
-      window.showInformationMessage('The prompt was cancelled');
-      return;
-    } else if (name) {
-      repositoryName = name;
-    }
+  const name = await inputNewFolderName(repositoryName);
+  if (name === undefined) {
+    window.showInformationMessage('The prompt was cancelled');
+    return;
+  } else if (name) {
+    repositoryName = name;
   }
 
   try {
@@ -72,9 +66,4 @@ async function inputNewFolderName(
 export const degitLocalCommand: RegisterableCommand = {
   name: 'degit-local',
   callback: degitLocalCallback,
-};
-
-export const degitLocalNamedCommand: RegisterableCommand = {
-  name: 'degit-local-named',
-  callback: degitLocalNamedCallback,
 };

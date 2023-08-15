@@ -32,10 +32,6 @@
       {
         "command": "vsc-degit.degit-local",
         "title": "Degit Local"
-      },
-      {
-        "command": "vsc-degit.degit-local-named",
-        "title": "Degit Local (named)"
       }
     ],
     "configuration": {
