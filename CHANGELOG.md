@@ -8,6 +8,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [0.5.1]
 
+- Unified two versions of the local degit command `degit-local` and `degit-local-named` into one command. User of the command has been adapted to allow perform both actions within the same flow.
+
+## [0.5.1]
+
 - Fixed copies for the `degit-local` and `degit-local-named` commands.
 
 ## [0.5.0]
