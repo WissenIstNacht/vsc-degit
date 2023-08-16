@@ -5,7 +5,7 @@ export function activate(context: ExtensionContext) {
   registerableCommands.forEach((regCom) => {
     const newCommand = commands.registerCommand(
       'vsc-degit.' + regCom.name,
-      regCom.callback
+      () => regCom.callback(context)
     );
     context.subscriptions.push(newCommand);
   });
