@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.8.0]
+
+- Improved the look of the quick-pick dialog in the `degit-local` command.
+
 ## [0.7.0]
 
 - Added a quick pick dialog to the `degit-local` command that shows a selection of recently/frequently degitted local repository sources. This history is continuously updated to adapt to latest pick.
