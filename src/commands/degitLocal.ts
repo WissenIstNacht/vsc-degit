@@ -2,6 +2,8 @@ import { execSync } from 'child_process';
 import {
   ExtensionContext,
   InputBoxOptions,
+  QuickPickItem,
+  QuickPickItemKind,
   QuickPickOptions,
   Uri,
   window,
@@ -11,6 +13,7 @@ import { CLONE_NAME_VALIDATION_REGEXP } from '../constants/regex';
 import { LocalPath, RegisterableCommand } from '../types';
 import { openRepository, pickFolder } from '../util/io';
 
+type QuickPickResult = { path: string } | 'FOLDER_PICKER';
 const LOCAL_REPO_HISTORY_KEY = 'local-repo-history';
 
 async function degitLocalCallback(context: ExtensionContext) {
@@ -72,8 +75,6 @@ async function degitLocalCallback(context: ExtensionContext) {
   context.globalState.update(LOCAL_REPO_HISTORY_KEY, updatedLocalHistory);
 }
 
-type QuickPickResult = { path: string } | 'FOLDER_PICKER';
-
 async function quickPickPath(
   localRepoHistory: LocalPath[]
 ): Promise<QuickPickResult | undefined> {
@@ -90,16 +91,31 @@ async function quickPickPath(
     ignoreFocusOut: true,
   };
 
-  const items = frecentPaths;
+  const items: QuickPickItem[] = [];
   const OPEN_FILE_PICKER = 'Open Folder Picker';
-  items.push(OPEN_FILE_PICKER);
+  items.push({ label: OPEN_FILE_PICKER });
+  items.push({ label: 'Recent Sources', kind: QuickPickItemKind.Separator });
+  frecentPaths.forEach((path) => {
+    const pathSegments = path.split('/');
+    const repoName = pathSegments.splice(-1);
+    const repoLocation = pathSegments.join('/');
+
+    items.push({ label: repoName[0], description: repoLocation });
+  });
   return window.showQuickPick(items, options).then((quickPickValue) => {
     if (!quickPickValue) {
       return undefined;
-    } else if (quickPickValue === OPEN_FILE_PICKER) {
+    }
+
+    if (quickPickValue.label === OPEN_FILE_PICKER) {
       return 'FOLDER_PICKER';
     }
-    return { path: quickPickValue };
+
+    const completePath = quickPickValue.description!.concat(
+      '/',
+      quickPickValue.label
+    );
+    return { path: completePath };
   });
 }
 
